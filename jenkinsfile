@@ -18,6 +18,7 @@ node {
         script {
             echo "Checking for changes in the last commit:"
             sh 'git diff --name-only HEAD~1'
+            echo "test"
         }
     }
 }
