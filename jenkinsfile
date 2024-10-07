@@ -1,15 +1,36 @@
-node {
-    stage('Preparation') {
-        catchError(buildResult: 'SUCCESS') {
-            sh 'docker stop samplerunning'
-            sh 'docker rm samplerunning'
+pipeline {
+    agent any
+    stages {
+        stage('Preparation') {
+            steps {
+                script {
+                    catchError(buildResult: 'SUCCESS') {
+                        sh 'docker stop samplerunning || true'
+                        sh 'docker rm samplerunning || true'
+                    }
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Starting Build Sample App...'
+                build 'BuildSampleApp'
+            }
+        }
+        stage('Results') {
+            steps {
+                echo 'Running Tests for Sample App...'
+                build 'TestSampleApp'
+            }
+        }
+        stage('Completion') {
+            steps {
+                echo 'Pipeline completed successfully!'
+            }
         }
     }
-    stage('Build') {
-        echo 'starting build sampel app'
-        build 'BuildSampleApp'
-    }
-    stage('Results') {
-        build 'TestSampleApp'
+    triggers {
+        // This will trigger a build on every push
+        githubPush()
     }
 }
