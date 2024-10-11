@@ -1,8 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-docker stop samplerunning
-docker rm samplerunning
+if docker ps -a -q -f name=samplerunning > /dev/null; then
+    docker stop samplerunning
+    docker rm samplerunning
+else 
+    echo "Container samplerunning does not exist, skipping stop and remove."
+fi
 
 mkdir tempdir
 mkdir tempdir/templates
