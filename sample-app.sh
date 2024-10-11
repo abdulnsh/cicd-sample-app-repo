@@ -1,6 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
+sudo docker stop samplerunning
+sudo docker rm samplerunning
+
 mkdir tempdir
 mkdir tempdir/templates
 mkdir tempdir/static
